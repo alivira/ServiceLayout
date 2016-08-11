@@ -1,0 +1,89 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "deploymentLabel": {
+            "type": "string"
+        },
+        "serviceDomainName": {
+            "type": "string"
+        },
+        "servicePackageLink": {
+            "type": "string"
+        },
+        "serviceConfigurationLink": {
+            "type": "string"
+        },
+        "sampleCertThumbprint": {
+            "type": "string"
+        },
+        "pfxContent": {
+            "type": "securestring"
+        },
+		"anotherSampleCertContent": {
+            "type": "securestring"
+        },		
+		"anotherSampleCertThumbprint": {
+            "type": "string"
+        }
+    },
+
+    "variables": {
+        "resourceLocation": "[resourcegroup().location]",
+    },
+
+    "resources": [
+        {
+            "apiVersion": "2014-06-01",
+            "type": "Microsoft.ClassicCompute/domainNames",
+            "name": "[parameters('serviceDomainName')]",
+            "location": "[variables('resourceLocation')]",
+            "resources": [
+                {
+                    "apiVersion": "2014-06-01",
+                    "name": "[parameters('sampleCertThumbprint')]",
+                    "type": "serviceCertificates",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.ClassicCompute/domainNames', parameters('serviceDomainName'))]"
+                    ],
+                    "properties": {
+                        "data": "[parameters('pfxContent')]",
+                        "certificateFormat": "pfx"                        
+                    }
+                },
+				{
+                    "apiVersion": "2014-06-01",
+                    "name": "[parameters('anotherSampleCertThumbprint')]",
+                    "type": "serviceCertificates",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.ClassicCompute/domainNames', parameters('serviceDomainName'))]"
+                    ],
+                    "properties": {
+                        "data": "[parameters('anotherSampleCertContent')]",
+                        "certificateFormat": "pfx"                       
+                    }
+                },
+                {
+                    "apiVersion": "2014-06-01",
+                    "name": "production",
+                    "type": "deploymentSlots",
+                    "dependsOn": [
+                        "[concat('Microsoft.ClassicCompute/domainNames/', parameters('serviceDomainName'), '/serviceCertificates/', parameters('sampleCertThumbprint'))]",
+                        "[concat('Microsoft.ClassicCompute/domainNames/', parameters('serviceDomainName'), '/serviceCertificates/', parameters('anotherSampleCertThumbprint'))]",
+                        "[resourceId('Microsoft.ClassicCompute/domainNames', parameters('serviceDomainName'))]"
+                    ],
+                    "properties": {
+                        "packageLink": {
+                            "uri": "[parameters('servicePackageLink')]"
+                        },
+                        "deploymentLabel": "[parameters('deploymentLabel')]",
+                        "ConfigurationLink": {
+                            "uri": "[parameters('serviceConfigurationLink')]"
+                        },
+                        "deploymentOptions": "StartDeployment"
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,11 @@
+{
+    "$schema": "http://schema.express.azure.com/schemas/2015-01-01-alpha/RolloutParameters.json",
+    "contentVersion": "1.0.0.0",
+
+    "MdmHealthCheckParameters": {
+        "MonitoringAccountName": "azureexpresstest",
+        "WaitBeforeMonitorTimeInMinutes": "15",
+        "MonitorTimeInMinutes": "5",
+        "MdmHealthCheckEndPoint" : "https://az-int.metrics.nsatc.net:1886/RecoveryService"
+    }
+}

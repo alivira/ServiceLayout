@@ -1,0 +1,59 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentParameters.json",
+    "contentVersion": "1.0.0.0",
+
+	"paths" : [
+	    "servicePackageLink",
+		"serviceConfigurationLink"
+	],
+    "parameters": {
+        "deploymentLabel": { "value": "Ev2SampleTest1" },
+
+        // Replace the placeholder with your own service domain name
+        "serviceDomainName": { "value": "aviraVSRMTesting1" },
+
+        "servicePackageLink": { "value": "bin\\TestCloudService.cspkg" },
+        "serviceConfigurationLink": { "value": "Configurations\\AppLoader001.ServiceConfiguration.cscfg" },
+        "pfxContent": { "value": "SampleCert.Content" },
+        "sampleCertThumbprint": {"value": "SampleCert.Thumbprint"},
+		"anotherSampleCertContent":{ "value" : "AnotherSampleCert.Content" },
+		"anotherSampleCertThumbprint": {"value": "AnotherSampleCert.Thumbprint"}
+    },
+    "secrets" :[
+	    {
+	        "TargetReference":"serviceConfigurationLink",
+	        "Replacements":
+			{
+				"__Secret_Sample__" :
+				{
+				    "SecretId":"https://azureservicedeploysample.vault.azure.net:443/secrets/MySecretPassword",
+				    "EncryptWith" :"https://azureservicedeploysample.vault.azure.net:443/secrets/MySampleCertificate"
+				},
+				"__Another_Secret_Sample__" :
+				{
+				    "SecretId":"https://azureservicedeploysample.vault.azure.net:443/secrets/MyOtherSecretPassword",
+				    "EncryptWith" :"https://azureservicedeploysample.vault.azure.net:443/secrets/MySampleCertificate"
+				},
+				"__Storage_ConnectionString__" :
+				{
+				    "SecretId":"https://azureservicedeploysample.vault.azure.net:443/secrets/TestStorageConnectionString"
+				}
+			},
+			"Certificates":[
+			    {
+			        "Name":"SampleCert",
+				    "ContentReference" : "https://azureservicedeploysample.vault.azure.net:443/secrets/MySampleCertificate"
+			    }
+			]
+	    },
+		{
+		    "TargetReference":"None",
+			"Certificates":[
+				{
+				    "Name":"AnotherSampleCert",
+					"ContentReference" : "https://azureservicedeploysample.vault.azure.net:443/secrets/AnotherSampleCertificate"
+				}
+			]
+		}
+	]
+}

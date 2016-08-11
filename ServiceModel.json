@@ -1,0 +1,60 @@
+{
+    "$schema": "http://schema.express.azure.com/schemas/2015-01-01-alpha/ServiceModel.json",
+    "contentVersion": "0.0.0.1",
+
+    "ServiceMetadata": {
+        "ServiceGroup": "Contoso-MktPlace",
+        "Environment": "Test"
+    },
+
+    "ServiceResourceGroupDefinitions": [
+    {
+        "Name":"MktPlace.AppIngestion",
+        "ServiceResourceDefinitions": [
+        {
+            "Name":"MktPlace.AppIngestion.AppLoader",
+            "ArmTemplatePath":"Templates\\MktPlace.AppIngestion.AppLoader.Template.json"
+        }
+        ]
+    }
+    ],
+
+    "ServiceResourceGroups": [
+        {
+            // Replace the placeholder with  your own resource group name and its location
+            "AzureResourceGroupName": "AppIngestionWUS001-avira"",
+            "Location": "West US",
+
+            "InstanceOf": "MktPlace.AppIngestion",
+
+            // Replace the placeholder with your own azure subscription id
+            "AzureSubscriptionId": "8aa611e3-9868-4a46-8748-593762afd9ec",
+
+            "ServiceResources": [
+                {
+                    "Name": "AppLoader001",
+                    "InstanceOf": "MktPlace.AppIngestion.AppLoader",
+                    "ArmParametersPath": "Parameters\\AppLoader001.Parameters.json"
+                }
+            ]
+        },
+        {
+            // Add your own resource group name and its location
+            "AzureResourceGroupName": "AppIngestionEUS001-avira"",
+            "Location": "East US",
+
+            "InstanceOf": "MktPlace.AppIngestion",
+
+            // Replace the placeholder with your own azure subscription id
+            "AzureSubscriptionId": "8aa611e3-9868-4a46-8748-593762afd9ec",
+
+            "ServiceResources": [
+                {
+                    "Name": "AppLoader002",
+                    "InstanceOf": "MktPlace.AppIngestion.AppLoader",
+                    "ArmParametersPath": "Parameters\\AppLoader002.Parameters.json"
+                }
+            ]
+        }
+    ]
+}

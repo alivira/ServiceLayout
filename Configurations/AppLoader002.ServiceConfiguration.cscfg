@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ServiceConfiguration serviceName="TestCloudService" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="4" osVersion="*" schemaVersion="2014-06.2.4">
+  <Role name="WorkerRole">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <!-- Used in HealthCheck for service to emit metrics. Ev2 will replace values at rollout time -->
+      <Setting name="Name" value="AzureServiceDeploy_ServiceGroupName" />
+      <Setting name="Environment" value="AzureServiceDeploy_Environment" />
+      <Setting name="Location" value="AzureServiceDeploy_Location" />
+      <Setting name="deploymentunit" value="AzureServiceDeploy_ServiceResourceGroupName" />
+      <Setting name="roleversion" value="AzureServiceDeploy_ServiceResourceName" />
+      <!-- Used in HealthCheck... ENDS -->
+
+      <Setting name="MySecretPassword" value="__Secret_Sample__" />
+	  <Setting name="MyOtherSecretPassword" value="__Another_Secret_Sample__" />
+      <Setting name="StorageConnectionString" value="__Storage_ConnectionString__" />
+	  <Setting name="EnableKeyVaultDecryption" value="True" />
+      <Setting name="ExpectedPasswordValue" value="MySecretPassword" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="CN=azureexpresstest.microsoft.com" thumbprint="SampleCert.Thumbprint" thumbprintAlgorithm="sha1" />            
+    </Certificates>
+  </Role>
+  <Role name="WebRole">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <Setting name="MySecretPassword" value="__Secret_Sample__" />
+	  <Setting name="MyOtherSecretPassword" value="__Another_Secret_Sample__" />
+      <Setting name="StorageConnectionString" value="__Storage_ConnectionString__" />
+	  <Setting name="EnableKeyVaultDecryption" value="True" />
+      <Setting name="ExpectedPasswordValue" value="MySecretPassword" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="CN=azureexpresstest.microsoft.com" thumbprint="SampleCert.Thumbprint" thumbprintAlgorithm="sha1" />            
+    </Certificates>
+  </Role>
+</ServiceConfiguration>

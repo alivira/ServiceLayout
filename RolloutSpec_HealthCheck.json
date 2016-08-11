@@ -1,0 +1,25 @@
+{
+    "$schema": "http://schema.express.azure.com/schemas/2015-01-01-alpha/RolloutSpec.json",
+    "ContentVersion": "1.0.0.0",
+
+    "RolloutMetadata": {
+        "ServiceModelPath": "ServiceModel_HealthCheck.json",
+        "Name": "MktPlace 1.0.0.0",
+        "RolloutType": "Major",
+        "BuildSource": {            
+            "Parameters": {
+                "ServiceGroupRoot": "ServiceGroupRoot",
+                "VersionFile": "buildver.txt"
+            }
+        }
+    },
+
+  "OrchestratedSteps": [
+    {
+      "Name": "Rollout_Stamp1",
+      "TargetType": "ServiceResource",
+      "TargetName": "AppLoader002",
+      "Actions": [ "Deploy", "MdmHealthCheck" ]
+    }
+  ]
+}
